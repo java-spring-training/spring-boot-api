@@ -1,0 +1,9 @@
+api:
+  list:
+    host: https://com.example.production
+    port: 443
+    path: /list
+  detail:
+    host: https://com.example.production
+    port: 443
+    path: /detail

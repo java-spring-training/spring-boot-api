@@ -1,0 +1,28 @@
+api:
+  list:
+    host: http://com.example.dev
+    port: 80
+    path: /list
+  detail:
+    host: http://com.example.dev
+    port: 80
+    path: /detail
+  timeout: 3000
+
+product:
+  categories:
+    - car
+    - motorcycle
+    - bicycle
+
+class:
+  students:
+    - student:
+      name: Student A
+      gender: male
+    - student:
+      name: Student B
+      gender: male
+    - student:
+      name: Student C
+      gender: female
