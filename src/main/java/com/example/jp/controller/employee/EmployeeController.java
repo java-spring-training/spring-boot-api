@@ -1,4 +1,4 @@
-package com.example.jp.controller.book;
+package com.example.jp.controller.employee;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class EmployeeController {
     private String getErrorMessage(final BindingResult bindingResult) {
 
         List<String> errMessages = new ArrayList<>();
-        bindingResult.getFieldErrors().forEach(f -> errMessages.add(f.getField() + " " + f.getDefaultMessage()));
+        bindingResult.getFieldErrors().forEach(f -> errMessages.add(f.getDefaultMessage()));
         return String.join("\r\n", errMessages);
     }
 }
