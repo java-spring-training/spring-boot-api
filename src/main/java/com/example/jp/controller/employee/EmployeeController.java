@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class EmployeeController {
@@ -31,12 +30,26 @@ public class EmployeeController {
         return "Success";
     }
 
+    @PostMapping("/searchName")
+    public String searchName(@Valid @RequestBody final EmployeeNamesRequest requests, final BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            return getErrorMessage(bindingResult);
+        }
+        return "Success ";
+    }
+
     /*private String getErrorMessage(final BindingResult bindingResult) {
 
         List<String> errMessages = new ArrayList<>();
         bindingResult.getFieldErrors().forEach(f -> errMessages.add(f.getDefaultMessage()));
         return String.join("\r\n", errMessages);
+    }
+
+    private String getMessage(final FieldError error) {
+        return !error.isBindingFailure() ? error.getDefaultMessage() : error.getField() + " " + "must be number";
     }*/
+
     private String getErrorMessage(final BindingResult bindingResult) {
 
         List<String> errMessages = new ArrayList<>();
@@ -44,10 +57,6 @@ public class EmployeeController {
         fieldErrors.forEach(error -> errMessages.add(getMessage(error)));
         return String.join("\r\n", errMessages);
     }
-
-    /*private String getMessage(final FieldError error) {
-        return !error.isBindingFailure() ? error.getDefaultMessage() : error.getField() + " " + "must be number";
-    }*/
 
     private HashMap<String, String> errFieldMap = new HashMap<String, String>(){{
         put("age", "age must be number");

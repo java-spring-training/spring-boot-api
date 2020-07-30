@@ -1,9 +1,13 @@
 package com.example.jp.controller.student;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -12,55 +16,58 @@ import java.util.stream.Collectors;
 public class StudentController {
 
     @GetMapping("/getParamFromQueryStringToObject")
-    public String getParamFromQueryStringToObject(StudentModelAttribute studentModelAttribute) {
+    public String getParamFromQueryStringToObject(final StudentModelAttribute studentModelAttribute) {
 
         return studentModelAttribute.getName() + " - " + studentModelAttribute.getGender();
     }
 
     @GetMapping("/getParamFromPathVariableToObject/{name}/{gender}")
-    public String getParamFromPathVariableToObject(StudentRequest studentRequest) {
+    public String getParamFromPathVariableToObject(final StudentRequest studentRequest) {
 
         return studentRequest.getName() + " - " + studentRequest.getGender();
     }
 
     @PostMapping("/getParamFromRequestBodyToObject")
-    public String getParamFromRequestBodyToObject(@RequestBody StudentRequestBody studentRequestBody) {
+    public String getParamFromRequestBodyToObject(@RequestBody final StudentRequestBody studentRequestBody) {
 
         return studentRequestBody.getName() + " - " + studentRequestBody.getGender();
     }
 
     @GetMapping("/getParamFromHeaderToMap")
-    public String getParamFromHeaderToMap(@RequestHeader Map<String, String> headers) {
+    public String getParamFromHeaderToMap(@RequestHeader final Map<String, String> headers) {
 
         return headers.get("name") + " - " + headers.get("gender");
     }
 
     @GetMapping("/getParamFromQueryString")
-    public String getParamFromQueryString(@RequestParam @Min(5) String name, @RequestParam(required = false) String gender) {
+    public String getParamFromQueryString(
+            @Length(min = 5, max = 10, message = "name length must be between 5 and 10") @RequestParam final String name,
+            @RequestParam(required = false) final String gender) {
 
         return name + " - " + gender;
     }
 
     @GetMapping("/getParamFromPathVariable/{name}/{gender}")
-    public String getParamFromPathVariable(@PathVariable String name, @PathVariable String gender) {
+    public String getParamFromPathVariable(final @PathVariable String name, @PathVariable final String gender) {
 
         return name + " - " + gender;
     }
 
     @GetMapping("/getParamFromHeader")
-    public String getParamFromHeader(@RequestHeader String name, @RequestHeader(required = false) String gender) {
+    public String getParamFromHeader(@RequestHeader final String name,
+                                     @RequestHeader(required = false) final String gender) {
 
         return name + " - " + gender;
     }
 
     @PostMapping("/getListStudentNameFromRequestBody")
-    public String getListStudentNameFromRequestBody(@RequestBody StudentNamesRequestBody studentNamesRequestBody) {
+    public String getListStudentNameFromRequestBody(final @RequestBody StudentNamesRequestBody studentNamesRequestBody) {
 
         return String.join(", ", studentNamesRequestBody.getNames());
     }
 
     @PostMapping("/getListStudentInfoFromRequestBody")
-    public String getListStudentInfoFromRequestBody(@RequestBody StudentsRequestBody studentsRequestBody) {
+    public String getListStudentInfoFromRequestBody(final @RequestBody StudentsRequestBody studentsRequestBody) {
 
         return studentsRequestBody.getStudents()
                 .stream()
@@ -69,7 +76,7 @@ public class StudentController {
     }
 
     @GetMapping("/getGraduatedStudent")
-    public String getGraduatedStudent(StudentModelAttribute request) {
+    public String getGraduatedStudent(final StudentModelAttribute request) {
         String graduated = request.isGraduated() ? "Graduated: YES" : "Graduated: NO";
         return request.getName() + " - " + request.getGender() + " - " + graduated;
     }
