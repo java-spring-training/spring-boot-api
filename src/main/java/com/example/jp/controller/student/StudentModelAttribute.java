@@ -7,4 +7,5 @@ public class StudentModelAttribute {
 
     private String name;
     private String gender;
+    private boolean graduated; // true | false
 }

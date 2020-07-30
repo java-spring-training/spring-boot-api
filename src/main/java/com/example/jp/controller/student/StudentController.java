@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class StudentController {
 
     @GetMapping("/getParamFromQueryStringToObject")
-    public String getParamFromQueryStringToObject(@ModelAttribute StudentModelAttribute studentModelAttribute) {
+    public String getParamFromQueryStringToObject(StudentModelAttribute studentModelAttribute) {
 
         return studentModelAttribute.getName() + " - " + studentModelAttribute.getGender();
     }
@@ -66,5 +66,11 @@ public class StudentController {
                 .stream()
                 .map(Object::toString)
                 .collect(Collectors.joining("\r\n"));
+    }
+
+    @GetMapping("/getGraduatedStudent")
+    public String getGraduatedStudent(StudentModelAttribute request) {
+        String graduated = request.isGraduated() ? "Graduated: YES" : "Graduated: NO";
+        return request.getName() + " - " + request.getGender() + " - " + graduated;
     }
 }
