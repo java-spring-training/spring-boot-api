@@ -17,8 +17,14 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public List<Product> findAll() {
+    public List<Product> findAll(final Product productRequest) {
 
-        return repository.findAll();
+        return repository.findAll(productRequest);
+    }
+
+    public void addProduct(final Product productRequest) {
+
+
+        repository.addProduct(productRequest);
     }
 }

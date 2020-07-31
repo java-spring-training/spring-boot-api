@@ -2,10 +2,12 @@ package com.example.jp.controller.employee;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 @Data
 public class EmployeeSearchRequest {
@@ -20,4 +22,7 @@ public class EmployeeSearchRequest {
     private String address;
     @Pattern(regexp="(^$|[0-9]{10})", message = "'phone' must be 10 digits")
     private String phone;
+
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date startDate;
 }

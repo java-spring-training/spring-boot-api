@@ -63,6 +63,7 @@ public class EmployeeController {
         put("cusType", "cusType must be number");
         put("point", "point must be number");
         put("gender", "gender must be 'true' or 'false'");
+        put("startDate", "startDate must be in a date format 'yyyy-MM-dd'");
     }};
 
     private String getMessage(final FieldError error) {
