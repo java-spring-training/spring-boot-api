@@ -48,7 +48,8 @@ public class ProductController {
     }
 
     @GetMapping("/searchProduct")
-    public ProductSearchResponse searchProduct(final @Valid ProductSearchRequest request, final BindingResult bindingResult) {
+    public ProductSearchResponse searchProduct(final @Valid ProductSearchRequest request,
+                                               final BindingResult bindingResult) throws Exception {
 
         if(bindingResult.hasErrors()) {
             throw new InvalidParameterException(getErrorMessage(bindingResult));
@@ -85,8 +86,6 @@ public class ProductController {
         service.addProduct(productRequest);
         return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
     }
-
-    // public Product(String name, String category, int price, String color, boolean secondHand, int year, Date registryDate) {
 
     private String getErrorMessage(final BindingResult bindingResult) {
 

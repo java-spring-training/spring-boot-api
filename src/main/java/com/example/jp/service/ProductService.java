@@ -2,6 +2,7 @@ package com.example.jp.service;
 
 import com.example.jp.domain.Product;
 import com.example.jp.domain.ProductRepository;
+import com.example.jp.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,13 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public List<Product> findAll(final Product productRequest) {
+    public List<Product> findAll(final Product productRequest) throws DataNotFoundException {
 
-        return repository.findAll(productRequest);
+        List<Product> products = repository.findAll(productRequest);
+        if(products.isEmpty()) {
+            throw new DataNotFoundException("Product list is empty");
+        }
+        return products;
     }
 
     public void addProduct(final Product productRequest) {

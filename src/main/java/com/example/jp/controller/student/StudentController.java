@@ -1,13 +1,9 @@
 package com.example.jp.controller.student;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import java.util.Map;
 import java.util.stream.Collectors;
 
