@@ -15,11 +15,6 @@ import java.io.IOException;
 public class ApiSecondFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // Do something ...
-    }
-
-    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -33,10 +28,5 @@ public class ApiSecondFilter implements Filter {
 
         //call next filter in the filter chain
         filterChain.doFilter(request, response);
-    }
-
-    @Override
-    public void destroy() {
-        // Do something ...
     }
 }
