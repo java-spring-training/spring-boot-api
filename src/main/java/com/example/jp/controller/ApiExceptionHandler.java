@@ -1,6 +1,7 @@
 package com.example.jp.controller;
 
 import com.example.jp.exception.DataNotFoundException;
+import com.example.jp.exception.ProductSearchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,6 +37,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ErrorResponse handleDataNotFoundException(final DataNotFoundException ex) {
         return new ErrorResponse(new ErrorResponse.Error(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
     }
+
+    @ExceptionHandler(ProductSearchException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleProductSearchException(final ProductSearchException ex) {
+        return new ErrorResponse(new ErrorResponse.Error(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()));
+    }
+
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)

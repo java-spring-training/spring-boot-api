@@ -1,6 +1,7 @@
 package com.example.jp.controller.product;
 
 import com.example.jp.domain.Product;
+import com.example.jp.controller.product.ProductSearchResponse.ProductInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,12 +12,11 @@ public class ProductSearchResponseFactory {
 
     public ProductSearchResponse createProductSearchResponse(List<Product> products) {
 
-        List<ProductSearchResponse.ProductInfo> productInfos =
-                products.stream().map(this::createProductInfo).collect(Collectors.toList());
+        List<ProductInfo> productInfos = products.stream().map(this::createProductInfo).collect(Collectors.toList());
         return new ProductSearchResponse(productInfos);
     }
 
-    private ProductSearchResponse.ProductInfo createProductInfo(Product product) {
+    private ProductInfo createProductInfo(Product product) {
         return new ProductSearchResponse.ProductInfo(
                 product.getId(),
                 product.getName(),

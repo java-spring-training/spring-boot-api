@@ -68,7 +68,7 @@ public class ProductController {
 
     @PostMapping("/addProduct")
     public SuccessResponse addProduct(final @Valid @RequestBody ProductAddRequest request,
-                                      final BindingResult bindingResult) {
+                                      final BindingResult bindingResult) throws Exception {
 
         if(bindingResult.hasErrors()) {
             throw new InvalidParameterException(getErrorMessage(bindingResult));
