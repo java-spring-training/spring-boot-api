@@ -87,6 +87,18 @@ public class ProductController {
         return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
     }
 
+    @PostMapping("/updateProduct")
+    public SuccessResponse updateProduct(final @RequestBody ProductUpdateRequest request) throws Exception {
+
+        // Create Domain Product Request to send to repository
+        Product productRequest = new Product(
+                request.getName(),
+                request.getCategory()
+        );
+        service.updateProduct(productRequest);
+        return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
+    }
+
     private String getErrorMessage(final BindingResult bindingResult) {
 
         List<String> errMessages = new ArrayList<>();

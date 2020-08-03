@@ -33,4 +33,9 @@ public class ProductService {
 
         repository.addProduct(productRequest);
     }
+
+    public void updateProduct(final Product productRequest) throws Exception {
+
+        repository.updateProduct(productRequest);
+    }
 }

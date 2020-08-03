@@ -2,13 +2,14 @@ package com.example.jp.repository;
 
 import com.example.jp.domain.Product;
 import com.example.jp.domain.ProductRepository;
+import com.example.jp.exception.ProductAddException;
 import com.example.jp.exception.ProductSearchException;
+import com.example.jp.exception.ProductUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -45,7 +46,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         // Factory List<ProductManagementInfo> -> List<Product>
         return factory.createProducts(result);
-
     }*/
 
     @Override
@@ -63,7 +63,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         ResponseEntity<ProductManagementSearchResponse> response;
         try {
             response = restTemplate.exchange(uri, HttpMethod.GET, null, ProductManagementSearchResponse.class);
-        } catch (HttpClientErrorException ex) {
+        } catch (RestClientException ex) {
             throw new ProductSearchException("API Product Management Search has exception");
         }
         // Check http status
@@ -75,11 +75,10 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         // Factory List<ProductManagementInfo> -> List<Product>
         return factory.createProducts(response.getBody());
-
     }
 
     /*@Override
-    public void addProduct(Product productRequest) throws ProductSearchException {
+    public void addProduct(Product productRequest) throws ProductAddException {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
         uriBuilder.scheme("http");
@@ -92,17 +91,21 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         HttpEntity<ProductManagementAddRequest> httpEntity = new HttpEntity<>(request, null);
 
-        ProductManagementAddRequest productManagementResponse =
-                restTemplate.postForObject(uri, httpEntity, ProductManagementAddRequest.class);
+        ProductManagementSuccessResponse response;
+        try {
+            response = restTemplate.postForObject(uri, httpEntity, ProductManagementSuccessResponse.class);
+        } catch (RestClientException ex) {
+            throw new ProductAddException("API Product Management Add has exception");
+        }
 
-        // do something like: Check object productManagementAddRequest ...
-        if(ObjectUtils.isEmpty(productManagementResponse) || StringUtils.isEmpty(productManagementResponse.getName())) {
-            throw new  ProductSearchException("API Product Management Add has exception");
+        // do something: Check Response object ProductManagementSuccessResponse ...
+        if(ObjectUtils.isEmpty(response) || response.getCode() != HttpStatus.OK.value()) {
+            throw new  ProductAddException("API Product Management Add has exception");
         }
     }*/
 
     @Override
-    public void addProduct(Product productRequest) throws ProductSearchException {
+    public void addProduct(Product productRequest) throws ProductAddException {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
         uriBuilder.scheme("http");
@@ -113,21 +116,26 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         ProductManagementAddRequest request = new ProductManagementAddRequest("Car", 100);
 
-        HttpEntity<ProductManagementAddRequest> httpEntity = new HttpEntity<>(request, new HttpHeaders());
+        HttpEntity<ProductManagementAddRequest> httpEntity = new HttpEntity<>(request, null);
 
-        ResponseEntity<ProductManagementAddRequest> response;
+        ResponseEntity<ProductManagementSuccessResponse> response;
         try {
-            response = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, ProductManagementAddRequest.class);
-        } catch (HttpClientErrorException ex) {
-            throw new ProductSearchException("API Product Management Add has exception");
+            response = restTemplate.postForEntity(uri, httpEntity, ProductManagementSuccessResponse.class);
+        } catch (RestClientException ex) {
+            throw new ProductAddException("API Product Management Add has exception");
         }
 
         // Check http status & Object Response
         if (ObjectUtils.isEmpty(response)
                 || response.getStatusCode() != HttpStatus.OK
                 || ObjectUtils.isEmpty(response.getBody())
-                || ObjectUtils.isEmpty(response.getBody().getName())) {
-            throw new  ProductSearchException("API Product Management Add has exception");
+                || response.getBody().getCode() != HttpStatus.OK.value()) {
+            throw new  ProductAddException("API Product Management Add has exception");
         }
+    }
+
+    @Override
+    public void updateProduct(Product productRequest) throws ProductUpdateException {
+
     }
 }

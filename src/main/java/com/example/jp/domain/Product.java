@@ -63,4 +63,11 @@ public class Product {
         this.year = year;
         this.registryDate = registryDate;
     }
+
+    public Product(String name, String category) {
+
+        Preconditions.checkArgument(!StringUtils.isEmpty(name), "name must not be empty");
+        this.name = name;
+        this.category = category;
+    }
 }
