@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,15 +85,22 @@ public class ProductController {
         return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
     }
 
-    @PostMapping("/updateProduct")
+    @PutMapping("/updateProduct")
     public SuccessResponse updateProduct(final @RequestBody ProductUpdateRequest request) throws Exception {
 
         // Create Domain Product Request to send to repository
         Product productRequest = new Product(
                 request.getName(),
-                request.getCategory()
+                request.getPrice()
         );
         service.updateProduct(productRequest);
+        return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
+    }
+
+    @DeleteMapping("/deleteProduct/{id}")
+    public SuccessResponse deleteProduct(final ProductDeleteRequest request) throws Exception {
+
+        service.deleteProduct(request.getId());
         return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
     }
 

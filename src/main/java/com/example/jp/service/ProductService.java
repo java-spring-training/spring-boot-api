@@ -38,4 +38,9 @@ public class ProductService {
 
         repository.updateProduct(productRequest);
     }
+
+    public void deleteProduct(final int id) throws Exception {
+
+        repository.deleteProduct(id);
+    }
 }

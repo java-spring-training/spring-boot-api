@@ -7,7 +7,7 @@ api:
     host: localhost
     port: 8080
     path: /detail
-  timeout: 3000
+  timeout: 10000
 
 product:
   categories:

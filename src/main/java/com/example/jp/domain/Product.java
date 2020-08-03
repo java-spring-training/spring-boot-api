@@ -64,10 +64,10 @@ public class Product {
         this.registryDate = registryDate;
     }
 
-    public Product(String name, String category) {
+    public Product(String name, int price) {
 
         Preconditions.checkArgument(!StringUtils.isEmpty(name), "name must not be empty");
         this.name = name;
-        this.category = category;
+        this.price = price;
     }
 }

@@ -15,7 +15,7 @@ public class RestTemplateConfig {
     private int timeout;
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    public RestTemplate productRestTemplate(RestTemplateBuilder builder) {
 
         return builder
                 .setConnectTimeout(Duration.ofMillis(timeout))
