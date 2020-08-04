@@ -7,15 +7,20 @@ import com.example.jp.config.StudentConfig;
 import com.example.jp.controller.SuccessResponse;
 import com.example.jp.domain.Product;
 import com.example.jp.service.ProductService;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.ResourceAccessException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.security.InvalidParameterException;
+import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,6 +115,26 @@ public class ProductController {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         fieldErrors.forEach(error -> errMessages.add(getMessage(error)));
         return String.join("\r\n", errMessages);
+    }
+
+    @GetMapping("/product/test/name")
+    public String getFirstProductName() {
+
+        return service.getFirstProductName();
+    }
+
+    @GetMapping("/product/listAll")
+    public ProductSearchResponse listAll() {
+
+        List<Product> products = service.getListAll();
+        return productFactory.createProductSearchResponse(products);
+    }
+
+    @GetMapping("/product/searchByName")
+    public ProductSearchResponse searchByName(@RequestParam final String name) {
+
+        List<Product> products = service.searchByName(name);
+        return productFactory.createProductSearchResponse(products);
     }
 
     private HashMap<String, String> errFieldMap = new HashMap<String, String>(){{
