@@ -22,7 +22,6 @@ public class ProductDbRepositoryImpl implements ProductDbRepository {
     @Override
     public String getFirstProductName() {
         return mapper.getFirstProductName();
-
     }
 
     @Override
@@ -33,5 +32,6 @@ public class ProductDbRepositoryImpl implements ProductDbRepository {
     @Override
     public List<Product> searchByName(String name) {
         return mapper.searchByName("%" + name + "%");
+        //return mapper.searchByName(name);
     }
 }

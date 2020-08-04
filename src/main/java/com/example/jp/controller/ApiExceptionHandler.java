@@ -53,19 +53,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorResponse(new ErrorResponse.Error(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()));
     }
 
-    /*@ExceptionHandler(MyBatisSystemException.class)
+    @ExceptionHandler(MyBatisSystemException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleDbConnectionException(final MyBatisSystemException ex) {
         return new ErrorResponse(
                 new ErrorResponse.Error(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getCause().getCause().getMessage()));
-    }*/
+    }
 
-    /*@ExceptionHandler(DataAccessException.class)
+    @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleDataAccessException(final DataAccessException ex) {
         return new ErrorResponse(
                 new ErrorResponse.Error(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getCause().getMessage()));
-    }*/
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
