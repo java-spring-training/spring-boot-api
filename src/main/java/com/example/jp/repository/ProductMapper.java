@@ -24,7 +24,7 @@ public interface ProductMapper {
     List<Product> searchByName(String name);
 
     @Insert("INSERT INTO `product`(`name`, `category`, `price`, `color`, `second_hand`, `year`, `registry_date`) " +
-            "VALUES (#{c}, #{category}, #{price}, #{color}, #{secondHand}, #{year}, #{registryDate} )")
+            "VALUES (#{name}, #{category}, #{price}, #{color}, #{secondHand}, #{year}, #{registryDate} )")
     void addProduct(Product product);
 
     @Insert({"<script>",
@@ -47,13 +47,13 @@ public interface ProductMapper {
             "WHERE `id` = #{id}")
     void updateProduct(Product product);
 
-    @Insert({"<script>",
+    @Delete({"<script>",
             "DELETE FROM `product` WHERE `id` IN ",
-            "(" +
-                    "<foreach item='id' collection='ids' open='' separator=',' close=''>" +
+            //"(" +
+                    "<foreach item='id' collection='ids' open='(' separator=',' close=')'>" +
                     "#{id} " +
-                    "</foreach>"
-            + ")",
+                    "</foreach>",
+            //+ ")",
             "</script>"})
     void deleteProducts(@Param("ids")List<Integer> ids);
 }
