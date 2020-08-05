@@ -7,20 +7,14 @@ import com.example.jp.config.StudentConfig;
 import com.example.jp.controller.SuccessResponse;
 import com.example.jp.domain.Product;
 import com.example.jp.service.ProductService;
-import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.ResourceAccessException;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.security.InvalidParameterException;
-import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +28,7 @@ public class ProductController {
     private ProductConfig productConfig;
     private StudentConfig studentConfig;
     private ProductSearchResponseFactory productFactory;
+    private ProductsAddRequestFactory productsAddRequestFactory;
 
     @Autowired
     public ProductController(final ProductService service,
@@ -41,13 +36,15 @@ public class ProductController {
                              final DetailApiConfig detailApiConfig,
                              final ProductConfig productConfig,
                              final StudentConfig studentConfig,
-                             final ProductSearchResponseFactory productFactory) {
+                             final ProductSearchResponseFactory productFactory,
+                             final ProductsAddRequestFactory productsAddRequestFactory) {
         this.service = service;
         this.listApiConfig = listApiConfig;
         this.detailApiConfig = detailApiConfig;
         this.productConfig = productConfig;
         this.studentConfig = studentConfig;
         this.productFactory = productFactory;
+        this.productsAddRequestFactory = productsAddRequestFactory;
     }
 
     @GetMapping("/searchProduct")
@@ -136,6 +133,73 @@ public class ProductController {
         List<Product> products = service.searchByName(name);
         return productFactory.createProductSearchResponse(products);
     }
+
+    @PostMapping("/product/addProduct")
+    public SuccessResponse addUnitProduct(final @Valid @RequestBody ProductAddRequest request,
+                                      final BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            throw new InvalidParameterException(getErrorMessage(bindingResult));
+        }
+        // Create Domain Product Request to send to repository
+        Product productRequest = new Product(
+                request.getName(),
+                request.getCategory(),
+                request.getPrice(),
+                request.getColor(),
+                request.isSecondHand(),
+                request.getYear(),
+                request.getRegistryDate()
+        );
+        service.addUnitProduct(productRequest);
+        return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
+    }
+
+    @PostMapping("/product/addProducts")
+    public SuccessResponse addProducts(final @Valid @RequestBody ProductsAddRequest request,
+                                          final BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            throw new InvalidParameterException(getErrorMessage(bindingResult));
+        }
+        List<Product> productsRequest = productsAddRequestFactory.createProducts(request.getProducts());
+        service.addListProduct(productsRequest);
+        return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
+    }
+
+    @PutMapping("/product/updateProduct")
+    public SuccessResponse updateUnitProduct(final @Valid @RequestBody ProductUpdateRequest request,
+                                          final BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            throw new InvalidParameterException(getErrorMessage(bindingResult));
+        }
+        // Create Domain Product Request to send to repository
+        Product productRequest = new Product(
+                request.getId(),
+                request.getName(),
+                request.getCategory(),
+                request.getPrice(),
+                request.getColor()
+        );
+        service.updateUnitProduct(productRequest);
+        return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
+    }
+
+    @DeleteMapping("/product/deleteProducts")
+    public SuccessResponse deleteProducts(@Valid final @RequestBody ProductsDeleteRequest request,
+                                          final BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            throw new InvalidParameterException(getErrorMessage(bindingResult));
+        }
+
+        service.deleteListProduct(request.getIds());
+        return new SuccessResponse(HttpStatus.OK.value(), "SUCCESS");
+    }
+
+
+
 
     private HashMap<String, String> errFieldMap = new HashMap<String, String>(){{
         put("price", "price must be a number");

@@ -70,4 +70,12 @@ public class Product {
         this.name = name;
         this.price = price;
     }
+
+    public Product(int id, String name, String category, int price, String color) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.color = color;
+    }
 }

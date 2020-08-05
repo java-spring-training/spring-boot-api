@@ -10,6 +10,9 @@ import java.util.Date;
 @Data
 public class ProductUpdateRequest {
 
+    private int id;
     private String name;
+    private String category;
     private int price;
+    private String color;
 }

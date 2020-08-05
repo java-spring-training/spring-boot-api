@@ -5,8 +5,6 @@ import com.example.jp.domain.ProductDbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
 import java.util.List;
 
 @Repository
@@ -33,5 +31,25 @@ public class ProductDbRepositoryImpl implements ProductDbRepository {
     public List<Product> searchByName(String name) {
         return mapper.searchByName("%" + name + "%");
         //return mapper.searchByName(name);
+    }
+
+    @Override
+    public void addProduct(Product product) {
+        mapper.addProduct(product);
+    }
+
+    @Override
+    public void addProducts(List<Product> products) {
+        mapper.addProducts(products);
+    }
+
+    @Override
+    public void updateProduct(Product product) {
+        mapper.updateProduct(product);
+    }
+
+    @Override
+    public void deleteProducts(List<Integer> ids) {
+        mapper.deleteProducts(ids);
     }
 }
